@@ -29,6 +29,12 @@
         button:hover {
             background-color: #218838;
         }
+        #restartButton {
+            background-color: #007bff;
+        }
+        #restartButton:hover {
+            background-color: #0056b3;
+        }
         #result {
             font-size: 24px;
             margin-top: 20px;
@@ -39,25 +45,50 @@
     <h1>¡Juego de Clicks!</h1>
     <p>Haz clic en el botón tantas veces como puedas en 10 segundos.</p>
     <button id="clickButton" onclick="clickGame()">¡Haz clic aquí!</button>
-    <div id="result"></div>
+    <button id="restartButton" onclick="restartGame()">Reiniciar Juego</button>
+    <div id="result">Clics: 0</div>
 
     <script>
         let clicks = 0;
         let gameStarted = false;
+        let gameEnded = false;
 
         function clickGame() {
-            if (!gameStarted) {
-                gameStarted = true;
-                clicks = 0;
-                document.getElementById("result").textContent = "¡El juego ha comenzado!";
-                
-                setTimeout(() => {
-                    gameStarted = false;
-                    document.getElementById("result").textContent = `Juego terminado. Hiciste ${clicks} clics.`;
-                }, 10000);
+            if (gameEnded) {
+                // No borrar el contador si el juego terminó.
+                document.getElementById("result").textContent = `Juego terminado. Hiciste ${clicks} clics. Presiona "Reiniciar Juego" para intentarlo de nuevo.`;
+            } else if (!gameStarted) {
+                // Inicia el juego en el primer clic.
+                startGame();
             } else {
+                // Incrementar el contador durante el juego.
                 clicks++;
+                document.getElementById("result").textContent = `Clics: ${clicks}`;
             }
+        }
+
+        function startGame() {
+            gameStarted = true;
+            gameEnded = false;
+            clicks = 1; // Contar el primer clic.
+            document.getElementById("result").textContent = `Clics: ${clicks} - ¡El juego ha comenzado!`;
+            setTimeout(() => {
+                gameStarted = false;
+                gameEnded = true;
+                document.getElementById("result").textContent = `Juego terminado. Hiciste ${clicks} clics. Presiona "Reiniciar Juego" para intentarlo de nuevo.`;
+            }, 10000);
+        }
+
+        function restartGame() {
+            clicks = 0;
+            gameStarted = true;
+            gameEnded = false;
+            document.getElementById("result").textContent = `Clics: ${clicks} - ¡El juego ha comenzado!`;
+            setTimeout(() => {
+                gameStarted = false;
+                gameEnded = true;
+                document.getElementById("result").textContent = `Juego terminado. Hiciste ${clicks} clics. Presiona "Reiniciar Juego" para intentarlo de nuevo.`;
+            }, 10000);
         }
     </script>
 </body>
